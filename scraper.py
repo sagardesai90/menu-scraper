@@ -13,7 +13,7 @@ headers = {
     'accept-language': 'en-US,en;q=0.9',
 }
 
-data = '{"brand":"GRUBHUB","client_id":"mp_yFU6flWhiKRdlgSMrwC43FF2","scope":"anonymous","device_id":1927446407,"refresh_token":"ca07ab96-b7d3-4b7e-9cf8-e7eba9b15b80"}'
+data = '{"brand":"GRUBHUB","client_id":"mp_yFU6flWhiKRdlgSMrwC43FF2","scope":"anonymous","device_id":1927446407}'
 
 response = requests.post('https://api-gtm.grubhub.com/auth', headers=headers, data=data)
 print(response, "response here")
@@ -59,13 +59,8 @@ def get_category(category):
 def make_restaurant(response_json):
     return {
         "restaurant": response_json["name"],
-        "categories": [get_category(category) for category in response_json[menu_category_list]]
+        "categories": [get_category(category) for category in response_json["menu_category_list"]]
     }
 
 print(response)
-make_restaurant(response.json())
-
-#NB. Original query string below. It seems impossible to parse and
-#reproduce query strings 100% accurately so the one below is given
-#in case the reproduced version is not "correct".
-# response = requests.get('https://api-gtm.grubhub.com/restaurants/337669?hideUnavailableMenuItems=true&showMenuItemCoupons=false&includePromos=true&bust=1579987408995', headers=headers)
+print(make_restaurant(response.json()['restaurant']))
